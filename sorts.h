@@ -7,11 +7,23 @@ class Sorts {
 private:
 
     // Vectors 
-    std::vector 
+    std::vector <int> sequence;
+    std::vector <int> insertionSequence;
+    std::vector <int> mergeSequence;
+    std::vector <int> quickSequence;
+    
+    
 
     // Variables
-    int
+    int hi;
+    int mid;
+    int low;
+    
 
 public:
-    //f
+    //insertions sort methods
+    void 
+    //mergesort methods
+    void 
+    //quicksort methods
     void 
