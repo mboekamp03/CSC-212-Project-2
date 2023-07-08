@@ -32,6 +32,8 @@ public:
 
     //quicksort methods
     //void
+    void quickSort(std::vector <int> * quick, int left, int right);
+    void r_quicksort(std::vector<int> *quick, int left, int right);
 
     // radix sort methods
     void radixSort(std::vector<int> &radixSequence, int n);
