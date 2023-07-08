@@ -2,14 +2,14 @@
 #include <fstream>
 
 //insertion sort function, where insertionSequence is the vector of size sizeN
-void Sorts::insertionSort(vector <int> &insertionSequence, int sizeN){
+void Sorts::insertionSort(std::vector <int> &insertionSequence, int sizeN){
 
     int i, j, k = 0;
     for (i = 1; i < sizeN; i++){
         j = i;
         k = insertionSequence[i];
         while (j > 0 and k < insertionSequence[j - 1]){
-            insertionSequence[j] = insertionSequnece[j - 1];
+            insertionSequence[j] = insertionSequence[j - 1];
             j--;
         }
         insertionSequence[j] = k;
@@ -56,4 +56,35 @@ void Sorts::merge(std::vector<int>& arr, int left, int mid, int right) {
             merge(arr, left, mid, right);
         }
     }
+
+
+/**
+* This is radix sort. Radix sort is used to sort arrays of numbers that all have
+* the same number of digits. This sort is NOT recommended on numbers of varying
+* lengths.
+* @param unsorted
+* @param numDigits
+* @return void
+*/
+void Sorts::radixSort(std::vector<int> &arr, int numDigits) {
+
+    for (int i = 0 ; i < numDigits ; i++) {
+
+        // create empty containers that we will organize into
+        std::vector< std::vector<int> > containers(10);
+
+        // for num in arr
+        for (int v : arr)
+            containers[(v / (int)std::pow(10, i)) % 10].push_back(v);
+
+        // clear out arr
+        arr.clear();
+
+        // Rinse & Repeat
+        for (const std::vector<int> &c : containers)
+            arr.insert(arr.end(), c.begin(), c.end());
+
+    }
+
+}
 
