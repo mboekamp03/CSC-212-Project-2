@@ -57,7 +57,46 @@ void Sorts::merge(std::vector<int>& arr, int left, int mid, int right) {
         }
     }
 
+int quickSort(std::vector <int> *quick, int left, int right){
+    {
+        int i = left;
+        int j = right + 1;
+        while (true) {
 
+            // while quick[i] < pivot, increase i
+            while (quick[++i] < quick[left])
+                if (i == right) break;
+
+            // while quick[i] > pivot, decrease j
+            while (quick[left] < quick[--j])
+
+                if (j == left) break;
+
+            // if i and j cross exit theloop
+            if(i >= j) break;
+
+            // swap quick[i], quick[j]
+            std::swap(quick[i], quick[j]);
+        }
+        // swap the pivot with quick[j]
+        std::swap(quick[left], quick[j]);
+
+        //return pivot's position
+        return j;
+    }
+}
+// recursively calls quicksort
+void r_quicksort(std::vector<int> *quick, int left, int right){
+    if (right <= left){
+        return;
+
+    }
+    int pivot = quickSort(quick, left, right);
+
+    r_quicksort(quick, left, pivot - 1);
+
+    r_quicksort(quick, pivot + 1, right);
+}
 /**
 * This is radix sort. Radix sort is used to sort arrays of numbers that all have
 * the same number of digits. This sort is NOT recommended on numbers of varying
