@@ -25,6 +25,6 @@ public:
     //insertions sort methods
     void insertionSort (vector <int> &insertionSequence, int n);
     //mergesort methods
-    void 
+    void mergeSort(std::vector<int>& arr, int left, int mid, int right);
     //quicksort methods
     void 
