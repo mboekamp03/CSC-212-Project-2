@@ -16,7 +16,7 @@ void Sorts::insertionSort(vector <int> &insertionSequence, int sizeN){
     }
 }
 
-void Sorts::mergeSort(std::vector<int>& arr, int left, int mid, int right) {
+void Sorts::merge(std::vector<int>& arr, int left, int mid, int right) {
     int i = left;       // Index for left subarray
     int j = mid + 1;    // Index for right subarray
     int k = 0;          // Index for temporary array
@@ -44,5 +44,16 @@ void Sorts::mergeSort(std::vector<int>& arr, int left, int mid, int right) {
         arr[i] = temp[k];
 }
 
+ void Sorts::mergeSort(std::vector<int>& arr, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2; // Calculate the mid-point
 
+            // Recursively divide the array into two halves
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+
+            // Merge the sorted halves
+            merge(arr, left, mid, right);
+        }
+    }
 
