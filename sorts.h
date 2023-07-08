@@ -15,6 +15,7 @@ private:
     
 
     // Variables
+    int sizeN;
     int hi;
     int mid;
     int low;
@@ -22,7 +23,7 @@ private:
 
 public:
     //insertions sort methods
-    void 
+    void insertionSort (vector <int> &insertionSequence, int n);
     //mergesort methods
     void 
     //quicksort methods
