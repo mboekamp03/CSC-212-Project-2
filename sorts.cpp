@@ -1,5 +1,4 @@
-#include "sorts.h"
-#include <fstream>
+#include "sort.h"
 
 //insertion sort function, where insertionSequence is the vector of size sizeN
 void Sorts::insertionSort(std::vector <int> &insertionSequence, int sizeN){
@@ -44,20 +43,23 @@ void Sorts::merge(std::vector<int>& arr, int left, int mid, int right) {
         arr[i] = temp[k];
 }
 
- void Sorts::mergeSort(std::vector<int>& arr, int left, int right) {
+ void Sorts::mergeSort(std::vector<int>& arr, int left, int right, SDL_Renderer *renderer) {
         if (left < right) {
             int mid = left + (right - left) / 2; // Calculate the mid-point
 
             // Recursively divide the array into two halves
-            mergeSort(arr, left, mid);
-            mergeSort(arr, mid + 1, right);
+            mergeSort(arr, left, mid, renderer);
+            mergeSort(arr, mid + 1, right, renderer);
 
             // Merge the sorted halves
             merge(arr, left, mid, right);
+
+            renderArray(renderer, arr);
+            SDL_Delay(FRAME_DELAY);
         }
     }
 
-int quickSort(std::vector <int> *quick, int left, int right){
+int Sorts::quickSort(std::vector <int> *quick, int left, int right){
     {
         int i = left;
         int j = right + 1;
@@ -86,7 +88,7 @@ int quickSort(std::vector <int> *quick, int left, int right){
     }
 }
 // recursively calls quicksort
-void r_quicksort(std::vector<int> *quick, int left, int right){
+void Sorts::r_quicksort(std::vector<int> *quick, int left, int right){
     if (right <= left){
         return;
 
@@ -127,3 +129,92 @@ void Sorts::radixSort(std::vector<int> &arr, int numDigits) {
 
 }
 
+void Sorts::insert(int num) {
+    sequence.push_back(num);
+}
+
+void Sorts::intializeVectors(std::vector<int> sequence) {
+    insertionSequence = sequence;
+    mergeSequence = sequence;
+    quickSequence = sequence;
+    radixSequence = sequence;
+}
+
+bool Sorts::initializeSDL(SDL_Window *&window, SDL_Renderer *&renderer) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    window = SDL_CreateWindow("Merge Sort Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (window == nullptr) {
+        std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == nullptr) {
+        std::cerr << "Renderer creation failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
+
+    return true;
+}
+
+void Sorts::handleEvents(bool &quit) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            quit = true;
+        }
+    }
+}
+
+void Sorts::renderArray(SDL_Renderer *renderer, const std::vector<int> &arr) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    const int barWidth = SCREEN_WIDTH / arr.size();
+    const int maxHeight = SCREEN_HEIGHT - 20;
+
+    for (size_t i = 0; i < arr.size(); ++i) {
+        const int barHeight = (arr[i] * maxHeight) / *std::max_element(arr.begin(), arr.end());
+        const int x = i * barWidth;
+        const int y = SCREEN_HEIGHT - barHeight;
+
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_Rect rect = {x, y, barWidth, barHeight};
+        SDL_RenderFillRect(renderer, &rect);
+    }
+
+    SDL_RenderPresent(renderer);
+}
+
+void Sorts::initializeVisual() {
+    intializeVectors(sequence);
+
+    SDL_Window *window = nullptr;
+    SDL_Renderer *renderer = nullptr;
+
+    initializeSDL(window, renderer);
+    bool quit = false;
+
+    if (mode == 0) {
+        while (!quit) {
+            handleEvents(quit);
+            mergeSort(mergeSequence, 0, mergeSequence.size() - 1, renderer);
+        }
+    }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
+void Sorts::setMode(int givenMode){
+    mode = givenMode;
+}
