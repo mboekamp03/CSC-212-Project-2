@@ -2,6 +2,8 @@
 #include <vector>
 #include <SDL2/SDL.h>
 #include <random>
+#include <string>
+
 
 
 class Sorts {
@@ -24,7 +26,8 @@ private:
 
     int SCREEN_WIDTH = 800;
     int SCREEN_HEIGHT = 600;
-    int FRAME_DELAY = 50;
+    int FRAME_DELAY = 100;
+    int GAP = 0;
 
     int mode;
 
