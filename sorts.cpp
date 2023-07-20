@@ -142,19 +142,19 @@ void Sorts::intializeVectors(std::vector<int> sequence) {
 
 bool Sorts::initializeSDL(SDL_Window *&window, SDL_Renderer *&renderer) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
+        std::cout << "SDL initialization failed: " << SDL_GetError() << std::endl;
         return false;
     }
 
     window = SDL_CreateWindow("Merge Sort Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == nullptr) {
-        std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
+        std::cout << "Window creation failed: " << SDL_GetError() << std::endl;
         return false;
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr) {
-        std::cerr << "Renderer creation failed: " << SDL_GetError() << std::endl;
+        std::cout << "Renderer creation failed: " << SDL_GetError() << std::endl;
         return false;
     }
 
