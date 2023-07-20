@@ -178,13 +178,13 @@ void Sorts::renderArray(SDL_Renderer *renderer, const std::vector<int> &arr) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    const int barWidth = SCREEN_WIDTH / arr.size();
-    const int maxHeight = SCREEN_HEIGHT - 20;
+    int barWidth = SCREEN_WIDTH / arr.size();
+    int maxHeight = SCREEN_HEIGHT - 20;
 
     for (size_t i = 0; i < arr.size(); ++i) {
-        const int barHeight = (arr[i] * maxHeight) / *std::max_element(arr.begin(), arr.end());
-        const int x = i * barWidth;
-        const int y = SCREEN_HEIGHT - barHeight;
+        int barHeight = (arr[i] * maxHeight) / *std::max_element(arr.begin(), arr.end() + arr.size());
+        int x = i * (barWidth + GAP);
+        int y = SCREEN_HEIGHT - barHeight;
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_Rect rect = {x, y, barWidth, barHeight};
