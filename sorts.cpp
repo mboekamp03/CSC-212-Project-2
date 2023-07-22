@@ -1,7 +1,7 @@
 #include "sort.h"
 
 //insertion sort function, where insertionSequence is the vector of size sizeN
-void Sorts::insertionSort(std::vector <int> &insertionSequence, int sizeN){
+void Sorts::insertionSort(std::vector <int> &insertionSequence, int sizeN, SDL_Renderer *renderer){
 
     int i, j, k = 0;
     for (i = 1; i < sizeN; i++){
@@ -12,6 +12,9 @@ void Sorts::insertionSort(std::vector <int> &insertionSequence, int sizeN){
             j--;
         }
         insertionSequence[j] = k;
+
+        renderArray(renderer, insertionSequence);
+        SDL_Delay(FRAME_DELAY);
     }
 }
 
@@ -59,7 +62,7 @@ void Sorts::merge(std::vector<int>& arr, int left, int mid, int right) {
         }
     }
 
-int Sorts::quickSort(std::vector <int> *quick, int left, int right){
+int Sorts::quickSort(std::vector <int> *quick, int left, int right, SDL_Renderer *renderer){
     {
         int i = left;
         int j = right + 1;
@@ -83,21 +86,24 @@ int Sorts::quickSort(std::vector <int> *quick, int left, int right){
         // swap the pivot with quick[j]
         std::swap(quick[left], quick[j]);
 
+        renderArray(renderer, insertionSequence);
+        SDL_Delay(FRAME_DELAY);
+
         //return pivot's position
         return j;
     }
 }
 // recursively calls quicksort
-void Sorts::r_quicksort(std::vector<int> *quick, int left, int right){
+void Sorts::r_quicksort(std::vector<int> *quick, int left, int right, SDL_Renderer *renderer){
     if (right <= left){
         return;
 
     }
-    int pivot = quickSort(quick, left, right);
+    int pivot = quickSort(quick, left, right, renderer);
 
-    r_quicksort(quick, left, pivot - 1);
+    r_quicksort(quick, left, pivot - 1, renderer);
 
-    r_quicksort(quick, pivot + 1, right);
+    r_quicksort(quick, pivot + 1, right, renderer);
 }
 /**
 * This is radix sort. Radix sort is used to sort arrays of numbers that all have
@@ -107,7 +113,7 @@ void Sorts::r_quicksort(std::vector<int> *quick, int left, int right){
 * @param numDigits
 * @return void
 */
-void Sorts::radixSort(std::vector<int> &arr, int numDigits) {
+void Sorts::radixSort(std::vector<int> &arr, int numDigits, SDL_Renderer *renderer) {
 
     for (int i = 0 ; i < numDigits ; i++) {
 
@@ -122,9 +128,12 @@ void Sorts::radixSort(std::vector<int> &arr, int numDigits) {
         arr.clear();
 
         // Rinse & Repeat
-        for (const std::vector<int> &c : containers)
+        for (const std::vector<int> &c : containers){
             arr.insert(arr.end(), c.begin(), c.end());
-
+            
+            renderArray(renderer, insertionSequence);
+            SDL_Delay(FRAME_DELAY);
+        }
     }
 
 }
@@ -178,7 +187,7 @@ void Sorts::renderArray(SDL_Renderer *renderer, const std::vector<int> &arr) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    int barWidth = SCREEN_WIDTH / arr.size();
+    int barWidth = (SCREEN_WIDTH / arr.size()) - GAP;
     int maxHeight = SCREEN_HEIGHT - 20;
 
     for (size_t i = 0; i < arr.size(); ++i) {
@@ -203,10 +212,33 @@ void Sorts::initializeVisual() {
     initializeSDL(window, renderer);
     bool quit = false;
 
+    // Insertion sort
     if (mode == 0) {
         while (!quit) {
             handleEvents(quit);
+            insertionSort(insertionSequence, insertionSequence.size(), renderer);
+        }
+    }
+    // Merge sort
+    else if (mode == 1) {
+        while (!quit) {
+            handleEvents(quit);
             mergeSort(mergeSequence, 0, mergeSequence.size() - 1, renderer);
+        }
+    }
+    // Quick sort
+    // STILL NEEDS TO BE DONE
+    else if (mode == 2) {
+        while (!quit) {
+            handleEvents(quit);
+            // mergeSort(mergeSequence, 0, mergeSequence.size() - 1, renderer);
+        }
+    }
+    // Radix sort
+    else if (mode == 3) {
+        while (!quit) {
+            handleEvents(quit);
+            radixSort(radixSequence, radixSequence.size(), renderer);
         }
     }
 
