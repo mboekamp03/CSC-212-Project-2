@@ -2,81 +2,68 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <cmath>
+#include <fstream>
+#include <sstream>
 
-// Window dimensions
-// variables are global so they can be adjusted easily
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+int NUM_BARS; // Number of bars to visualize
+const int BAR_SPACING = 1; // Spacing between bars
 
-// Delay in milliseconds between each frame update
-const int FRAME_DELAY = 50;
+int BAR_WIDTH = (SCREEN_WIDTH - (NUM_BARS - 1) * BAR_SPACING) / NUM_BARS;
+int MAX_BAR_HEIGHT = SCREEN_HEIGHT - 10;
+int FRAME_DELAY = 50;
 
-// Function to initialize SDL and create a window
-bool initializeSDL(SDL_Window *&window, SDL_Renderer *&renderer) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
-    window = SDL_CreateWindow("Merge Sort Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (window == nullptr) {
-        std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == nullptr) {
-        std::cerr << "Renderer creation failed: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
-
-    return true;
-}
-
-// Function to handle SDL events
-void handleEvents(bool &quit) {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            quit = true;
-        }
-    }
-}
-
-// Function to render the current state of the array
-void renderArray(SDL_Renderer *renderer, const std::vector<int> &arr) {
+void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    const int barWidth = SCREEN_WIDTH / arr.size();
-    const int maxHeight = SCREEN_HEIGHT - 20;
-
-    for (size_t i = 0; i < arr.size(); ++i) {
-        const int barHeight = (arr[i] * maxHeight) / *std::max_element(arr.begin(), arr.end());
-        const int x = i * barWidth;
-        const int y = SCREEN_HEIGHT - barHeight;
-
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_Rect rect = {x, y, barWidth, barHeight};
+    for (size_t i = 0; i < bars.size(); ++i) {
+        int barHeight = bars[i] * MAX_BAR_HEIGHT / *std::max_element(bars.begin(), bars.end());
+        int x = i * (BAR_WIDTH + BAR_SPACING);
+        SDL_Rect rect = { x, SCREEN_HEIGHT - barHeight, BAR_WIDTH, barHeight };
+        SDL_SetRenderDrawColor(renderer, 37, 150, 190, 255);
         SDL_RenderFillRect(renderer, &rect);
     }
 
     SDL_RenderPresent(renderer);
 }
 
-// Merge function for merge sort
-void merge(std::vector<int> &arr, int left, int mid, int right) {
+void radixSort(std::vector<int>& arr, int numDigits, SDL_Renderer* renderer) {
+    renderBars(renderer, arr);
+    SDL_Delay(FRAME_DELAY);
+    for (int i = 0; i < numDigits; i++) {
+        // create empty containers that we will organize into
+        std::vector<std::vector<int>> containers(10);
+
+        // for num in arr
+        for (int v : arr) {
+            containers[(v / static_cast<int>(std::pow(10, i))) % 10].push_back(v);
+        }
+        // clear out arr
+        arr.clear();
+
+        // Rinse & Repeat
+        for (const std::vector<int>& c : containers) {
+            for (int i = 0; i < c.size(); i++) {
+                arr.push_back(c[i]);
+            }
+        }
+        renderBars(renderer, arr);
+        SDL_Delay(FRAME_DELAY);
+    }
+}
+
+void mergeSortHelper(std::vector<int>& arr, int left, int mid, int right, SDL_Renderer* renderer) {
     int i = left;       // Index for left subarray
     int j = mid + 1;    // Index for right subarray
     int k = 0;          // Index for temporary array
 
-    std::vector<int> temp(right - left + 1); // Temporary array
+    // Define a temporary array
+    std::vector<int> temp(right - left + 1);
 
-    // Merge the two subarrays into the temporary array
+    // Merge the two sub-arrays into the temporary array
     while (i <= mid && j <= right) {
         if (arr[i] <= arr[j])
             temp[k++] = arr[i++];
@@ -95,34 +82,120 @@ void merge(std::vector<int> &arr, int left, int mid, int right) {
     // Copy the merged elements back to the original array
     for (i = left, k = 0; i <= right; i++, k++)
         arr[i] = temp[k];
+
+    renderBars(renderer, arr);
+    SDL_Delay(FRAME_DELAY);
 }
 
-// Merge sort function
-void mergeSort(std::vector<int> &arr, int left, int right, SDL_Renderer *renderer) {
+void mergeSort(std::vector<int>& arr, int left, int right, SDL_Renderer* renderer) {
     if (left < right) {
-        int mid = left + (right - left) / 2; // Calculate the mid-point
+        // Calculate the mid-point
+        int mid = left + (right - left) / 2;
 
         // Recursively divide the array into two halves
         mergeSort(arr, left, mid, renderer);
         mergeSort(arr, mid + 1, right, renderer);
 
         // Merge the sorted halves
-        merge(arr, left, mid, right);
+        mergeSortHelper(arr, left, mid, right, renderer);
     }
-
-    renderArray(renderer, arr);
-    SDL_Delay(FRAME_DELAY);
 }
 
-int main() {
-    SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
+void insertionSort(std::vector<int>& arr, SDL_Renderer* renderer) {
+    // Define temporary variables
+    int j, k;
 
-    if (!initializeSDL(window, renderer)) {
-        return 1;
+    // Loop through the array
+    for (int i = 1 ; i < arr.size() ; i++) {
+        // Update Values, Define temp (k)
+        j = i, k = arr[i];
+
+        // move element to correct position
+        while (j > 0 && k < arr[j - 1]) {
+            arr[j] = arr[j - 1];
+            j--;
+            renderBars(renderer, arr); // Visualize the array after each swap
+            SDL_Delay(FRAME_DELAY);
+        }
+
+        // restore temp
+        arr[j] = k;
+
+        renderBars(renderer, arr); // Visualize the array after each element is moved to the correct position
+        SDL_Delay(FRAME_DELAY);
+    }
+}
+
+int quickSortHelper(std::vector<int>& arr, int left, int right, SDL_Renderer* renderer) {
+    int i = left;
+    int j = right + 1;
+
+    while (true) {
+        // while quick[i] < pivot, increase i
+        while (arr[++i] < arr[left])
+            if (i == right) break;
+
+        // while quick[j] > pivot, decrease j
+        while (arr[left] < arr[--j])
+            if (j == left) break;
+
+        // if i and j cross exit the loop
+        if (i >= j) break;
+
+        // swap quick[i], quick[j]
+        std::swap(arr[i], arr[j]);
+
+        // Visualize the array after each swap
+        renderBars(renderer, arr);
+        SDL_Delay(FRAME_DELAY);
     }
 
-    bool quit = false;
+    // swap the pivot with quick[j]
+    std::swap(arr[left], arr[j]);
+
+    // Visualize the array after partitioning step
+    renderBars(renderer, arr);
+    SDL_Delay(FRAME_DELAY);
+
+    // return pivot's position
+    return j;
+}
+
+void quickSort(std::vector<int>& arr, int left, int right, SDL_Renderer* renderer) {
+    if (right <= left)
+        return;
+
+    int pivot = quickSortHelper(arr, left, right, renderer);
+
+    quickSort(arr, left, pivot - 1, renderer);
+    quickSort(arr, pivot + 1, right, renderer);
+}
+
+void quickSort(std::vector<int>& arr, SDL_Renderer* renderer) {
+    quickSort(arr, 0, arr.size() - 1, renderer);
+}
+
+int main(int argc, char* argv[]) {
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName); 
+    std::string line;
+    std::getline(inputFile, line);
+    std::istringstream data(line);
+
+    std::vector<int> arr;
+
+    int value;
+    while (data >> value) {
+        arr.push_back(value);
+    }
+
+    int mode = std::stoi(argv[2]);
+
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* window = SDL_CreateWindow("Radix Sort Visualizer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    std::vector<int> bars(NUM_BARS);
 
     // std::random_device random;
     // std::uniform_int_distribution<int> distribution(1,99);
@@ -132,23 +205,47 @@ int main() {
     //     arr.push_back(distribution(random));
     // }
 
-    // std::cout << "{";
-    // for (int i = 0; i < arr.size(); i++) {
-    //     std::cout << arr[i] << ", ";
-    // }
-    // std::cout << "}" << std::endl;
 
-    // std::vector<int> arr = {9, 5, 2, 7, 1, 8, 6, 3, 4, 10, 15, 12, 14, 11, 13, 18, 20, 17, 16, 19, 25, 22, 24, 21, 23, 30, 27, 59, 26, 28};
-    std::vector<int> arr = {9, 5, 2, 7, 1, 8, 6, 3, 4, 10};
+    NUM_BARS = arr.size();
+    BAR_WIDTH = (SCREEN_WIDTH - (NUM_BARS - 1) * BAR_SPACING) / NUM_BARS;
+    MAX_BAR_HEIGHT = SCREEN_HEIGHT - 10;
+
+    bool quit = false;
+    SDL_Event event;
 
     while (!quit) {
-        handleEvents(quit);
-        mergeSort(arr, 0, arr.size() - 1, renderer);
+        while (SDL_PollEvent(&event) != 0) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+
+        if (mode == 0) {
+            insertionSort(arr, renderer);
+        }
+        else if (mode == 1) {
+            mergeSort(arr, 0, arr.size() - 1, renderer);
+        }
+        else if (mode == 2) {
+            quickSort(arr, renderer);
+        }
+        else if (mode == 3) {
+            FRAME_DELAY = 350;
+            radixSort(arr, static_cast<int>(log10(NUM_BARS) + 1), renderer);
+        }
+
+        // Wait for the user to close the window
+        while (!quit) {
+            while (SDL_PollEvent(&event) != 0) {
+                if (event.type == SDL_QUIT) {
+                    quit = true;
+                }
+            }
+        }
     }
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
     return 0;
 }
