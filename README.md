@@ -20,13 +20,13 @@ Detailed instructions covering all aspects can be found near the end of the repo
 
 3. There are four seperate modes with this file:
 
- 0 -> Insertion Sort
+     0 -> Insertion Sort
  
- 1 -> Merge Sort
+     1 -> Merge Sort
  
- 2 -> Quicksort
+     2 -> Quicksort
  
- 3 -> Radix Sort
+     3 -> Radix Sort
 
 
 5. Run the code using the following command:
