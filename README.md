@@ -9,7 +9,7 @@ Instructions
 ---------------------
 SDL Visualizer:
 ---------------------
-Detailed instructions covering all aspects can be found near the end of the report in the Appendix. Here is a quick breakdown of compiling the program.
+Detailed instructions covering all aspects can be found near the end of the report in the Appendix. Here is a quick breakdown of compiling the program. This breakdown works only after you have installed the SDL downlaod and moved SDL frameworks into the frameworks folder of your MacBook.
 
 1. Copy file titled visual.cpp from this repository and insert into a c++ file.
 
