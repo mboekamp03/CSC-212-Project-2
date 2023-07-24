@@ -15,6 +15,28 @@ int BAR_WIDTH = (SCREEN_WIDTH - (NUM_BARS - 1) * BAR_SPACING) / NUM_BARS;
 int MAX_BAR_HEIGHT = SCREEN_HEIGHT - 10;
 int FRAME_DELAY = 50;
 
+void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars, int currentElement) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    for (size_t i = 0; i < bars.size(); ++i) {
+        int barHeight = bars[i] * MAX_BAR_HEIGHT / *std::max_element(bars.begin(), bars.end());
+        int x = i * (BAR_WIDTH + BAR_SPACING);
+        SDL_Rect rect = { x, SCREEN_HEIGHT - barHeight, BAR_WIDTH, barHeight };
+
+        // Set the color to white for the current element being checked
+        if (i == currentElement) {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White
+        } else {
+            SDL_SetRenderDrawColor(renderer, 37, 150, 190, 255); // Blue
+        }
+
+        SDL_RenderFillRect(renderer, &rect);
+    }
+
+    SDL_RenderPresent(renderer);
+}
+
 void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -29,6 +51,7 @@ void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars) {
 
     SDL_RenderPresent(renderer);
 }
+
 
 void radixSort(std::vector<int>& arr, int numDigits, SDL_Renderer* renderer) {
     renderBars(renderer, arr);
@@ -83,7 +106,7 @@ void mergeSortHelper(std::vector<int>& arr, int left, int mid, int right, SDL_Re
     for (i = left, k = 0; i <= right; i++, k++)
         arr[i] = temp[k];
 
-    renderBars(renderer, arr);
+    renderBars(renderer, arr, i);
     SDL_Delay(FRAME_DELAY);
 }
 
@@ -114,7 +137,7 @@ void insertionSort(std::vector<int>& arr, SDL_Renderer* renderer) {
         while (j > 0 && k < arr[j - 1]) {
             arr[j] = arr[j - 1];
             j--;
-            renderBars(renderer, arr); // Visualize the array after each swap
+            renderBars(renderer, arr, j); // Visualize the array after each swap
             SDL_Delay(FRAME_DELAY);
         }
 
@@ -146,7 +169,7 @@ int quickSortHelper(std::vector<int>& arr, int left, int right, SDL_Renderer* re
         std::swap(arr[i], arr[j]);
 
         // Visualize the array after each swap
-        renderBars(renderer, arr);
+        renderBars(renderer, arr, j);
         SDL_Delay(FRAME_DELAY);
     }
 
@@ -154,9 +177,11 @@ int quickSortHelper(std::vector<int>& arr, int left, int right, SDL_Renderer* re
     std::swap(arr[left], arr[j]);
 
     // Visualize the array after partitioning step
-    renderBars(renderer, arr);
+    renderBars(renderer, arr, j);
     SDL_Delay(FRAME_DELAY);
 
+    renderBars(renderer, arr);
+    SDL_Delay(FRAME_DELAY);
     // return pivot's position
     return j;
 }
@@ -228,6 +253,7 @@ int main(int argc, char* argv[]) {
             mergeSort(arr, 0, arr.size() - 1, renderer);
         }
         else if (mode == 2) {
+            FRAME_DELAY = 75;
             quickSort(arr, renderer);
         }
         else if (mode == 3) {
