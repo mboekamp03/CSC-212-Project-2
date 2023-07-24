@@ -34,35 +34,38 @@ void Sorts::merge(std::vector<int>& arr, int left, int mid, int right) {
     }
 
     // Copy the remaining elements of the left subarray, if any
-    while (i <= mid)
+    while (i <= mid) {
         temp[k++] = arr[i++];
+    }
 
     // Copy the remaining elements of the right subarray, if any
-    while (j <= right)
+    while (j <= right) {
         temp[k++] = arr[j++];
+    }
 
     // Copy the merged elements back to the original array
-    for (i = left, k = 0; i <= right; i++, k++)
+    for (i = left, k = 0; i <= right; i++, k++){
         arr[i] = temp[k];
+    }
 }
 
  void Sorts::mergeSort(std::vector<int>& arr, int left, int right, SDL_Renderer *renderer) {
-        if (left < right) {
-            int mid = left + (right - left) / 2; // Calculate the mid-point
+    if (left < right) {
+        int mid = left + (right - left) / 2; // Calculate the mid-point
 
-            // Recursively divide the array into two halves
-            mergeSort(arr, left, mid, renderer);
-            mergeSort(arr, mid + 1, right, renderer);
+        // Recursively divide the array into two halves
+        mergeSort(arr, left, mid, renderer);
+        mergeSort(arr, mid + 1, right, renderer);
 
-            // Merge the sorted halves
-            merge(arr, left, mid, right);
+        // Merge the sorted halves
+        merge(arr, left, mid, right);
 
-            renderArray(renderer, arr);
-            SDL_Delay(FRAME_DELAY);
-        }
+        renderArray(renderer, arr);
+        SDL_Delay(FRAME_DELAY);
     }
+ }
 
-int Sorts::quickSort(std::vector <int> *quick, int left, int right, SDL_Renderer *renderer){
+int Sorts::quickSort(std::vector <int> &quick, int left, int right, SDL_Renderer *renderer){
     {
         int i = left;
         int j = right + 1;
@@ -82,11 +85,15 @@ int Sorts::quickSort(std::vector <int> *quick, int left, int right, SDL_Renderer
 
             // swap quick[i], quick[j]
             std::swap(quick[i], quick[j]);
+            
+            renderArray(renderer, quick);
+            SDL_Delay(FRAME_DELAY);
+
         }
         // swap the pivot with quick[j]
         std::swap(quick[left], quick[j]);
 
-        renderArray(renderer, insertionSequence);
+        renderArray(renderer, quick);
         SDL_Delay(FRAME_DELAY);
 
         //return pivot's position
@@ -94,7 +101,7 @@ int Sorts::quickSort(std::vector <int> *quick, int left, int right, SDL_Renderer
     }
 }
 // recursively calls quicksort
-void Sorts::r_quicksort(std::vector<int> *quick, int left, int right, SDL_Renderer *renderer){
+void Sorts::r_quicksort(std::vector<int> &quick, int left, int right, SDL_Renderer *renderer){
     if (right <= left){
         return;
 
@@ -124,19 +131,33 @@ void Sorts::radixSort(std::vector<int> &arr, int numDigits, SDL_Renderer *render
         for (int v : arr)
             containers[(v / (int)std::pow(10, i)) % 10].push_back(v);
 
+            renderArray(renderer, arr);
+            SDL_Delay(FRAME_DELAY);
+
         // clear out arr
         arr.clear();
 
         // Rinse & Repeat
         for (const std::vector<int> &c : containers){
             arr.insert(arr.end(), c.begin(), c.end());
-            
-            renderArray(renderer, insertionSequence);
-            SDL_Delay(FRAME_DELAY);
         }
     }
 
 }
+
+void Sorts::radixSort(std::vector<int> &arr, SDL_Renderer *renderer) {
+
+    // Iterate through array and find maximum value
+    int maxVal = arr[0];
+    for (int i = 1 ; i < arr.size() ; i++) {
+        if (arr[i] > maxVal)
+            maxVal = arr[i];
+    }
+
+    // go to radix-sort implementation with a known maximum value of digits
+    return radixSort(arr, ceil(log10(maxVal)), renderer);
+}
+
 
 void Sorts::insert(int num) {
     sequence.push_back(num);
@@ -155,7 +176,7 @@ bool Sorts::initializeSDL(SDL_Window *&window, SDL_Renderer *&renderer) {
         return false;
     }
 
-    window = SDL_CreateWindow("Merge Sort Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Sort Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == nullptr) {
         std::cout << "Window creation failed: " << SDL_GetError() << std::endl;
         return false;
@@ -219,27 +240,52 @@ void Sorts::initializeVisual() {
             insertionSort(insertionSequence, insertionSequence.size(), renderer);
         }
     }
+    
     // Merge sort
     else if (mode == 1) {
         while (!quit) {
             handleEvents(quit);
             mergeSort(mergeSequence, 0, mergeSequence.size() - 1, renderer);
         }
+
+        // for (int i = 0; i < mergeSequence.size(); i++) {
+        //     std::cout << mergeSequence[i] << " ";
+        // }
+        // std::cout << std::endl;
     }
+
     // Quick sort
     // STILL NEEDS TO BE DONE
     else if (mode == 2) {
+        for (int i = 0; i < quickSequence.size(); i++) {
+            std::cout << quickSequence[i] << " ";
+        }
         while (!quit) {
             handleEvents(quit);
-            // mergeSort(mergeSequence, 0, mergeSequence.size() - 1, renderer);
+            quickSort(quickSequence, 0, quickSequence.size() - 1, renderer);
+        }
+        for (int i = 0; i < quickSequence.size(); i++) {
+            std::cout << quickSequence[i] << " ";
         }
     }
+
     // Radix sort
     else if (mode == 3) {
+        for (int i = 0; i < radixSequence.size(); i++) {
+            std::cout << radixSequence[i] << " ";
+        }
+        std::cout << std::endl;
+
         while (!quit) {
             handleEvents(quit);
-            radixSort(radixSequence, radixSequence.size(), renderer);
+            //std::cout << counter << std::endl;
+            radixSort(radixSequence, renderer);
+            //counter++;
         }
+        for (int i = 0; i < radixSequence.size(); i++) {
+            std::cout << radixSequence[i] << " ";
+        }
+        std::cout << std::endl;
     }
 
     SDL_DestroyRenderer(renderer);
