@@ -15,7 +15,7 @@ int BAR_WIDTH = (SCREEN_WIDTH - (NUM_BARS - 1) * BAR_SPACING) / NUM_BARS;
 int MAX_BAR_HEIGHT = SCREEN_HEIGHT - 10;
 int FRAME_DELAY = 50;
 
-void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars, int currentElement) {
+void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars, int currentElement, int currentElement2) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -25,7 +25,7 @@ void renderBars(SDL_Renderer* renderer, const std::vector<int>& bars, int curren
         SDL_Rect rect = { x, SCREEN_HEIGHT - barHeight, BAR_WIDTH, barHeight };
 
         // Set the color to white for the current element being checked
-        if (i == currentElement) {
+        if (i == currentElement || i == currentElement2) {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White
         } else {
             SDL_SetRenderDrawColor(renderer, 37, 150, 190, 255); // Blue
@@ -106,7 +106,7 @@ void mergeSortHelper(std::vector<int>& arr, int left, int mid, int right, SDL_Re
     for (i = left, k = 0; i <= right; i++, k++)
         arr[i] = temp[k];
 
-    renderBars(renderer, arr, i);
+    renderBars(renderer, arr, i, j);
     SDL_Delay(FRAME_DELAY);
 }
 
@@ -137,7 +137,7 @@ void insertionSort(std::vector<int>& arr, SDL_Renderer* renderer) {
         while (j > 0 && k < arr[j - 1]) {
             arr[j] = arr[j - 1];
             j--;
-            renderBars(renderer, arr, j); // Visualize the array after each swap
+            renderBars(renderer, arr, j, j); // Visualize the array after each swap
             SDL_Delay(FRAME_DELAY);
         }
 
@@ -169,7 +169,7 @@ int quickSortHelper(std::vector<int>& arr, int left, int right, SDL_Renderer* re
         std::swap(arr[i], arr[j]);
 
         // Visualize the array after each swap
-        renderBars(renderer, arr, j);
+        renderBars(renderer, arr, j, i);
         SDL_Delay(FRAME_DELAY);
     }
 
@@ -177,7 +177,7 @@ int quickSortHelper(std::vector<int>& arr, int left, int right, SDL_Renderer* re
     std::swap(arr[left], arr[j]);
 
     // Visualize the array after partitioning step
-    renderBars(renderer, arr, j);
+    renderBars(renderer, arr, j, i);
     SDL_Delay(FRAME_DELAY);
 
     renderBars(renderer, arr);
