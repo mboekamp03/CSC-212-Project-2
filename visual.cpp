@@ -192,7 +192,7 @@ int main(int argc, char* argv[]) {
     int mode = std::stoi(argv[2]);
 
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* window = SDL_CreateWindow("Radix Sort Visualizer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow("Sort Visualizer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     std::vector<int> bars(NUM_BARS);
@@ -221,6 +221,7 @@ int main(int argc, char* argv[]) {
         }
 
         if (mode == 0) {
+            FRAME_DELAY = 25;
             insertionSort(arr, renderer);
         }
         else if (mode == 1) {
