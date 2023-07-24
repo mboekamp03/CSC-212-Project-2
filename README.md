@@ -4,7 +4,9 @@ CSC212 Project 2
 Summary
 ---------------------
 The task of this project is to implement 4 different sorting algorithms: insertion sort, mergesort, quicksort, and an additional sorting algoriithm from our choosing that was not mentioned in class. Additionally, all sorting algorithms must be benchmarked and runtimes recorded using various inputs. 
-
+Planning
+---------------------
+We met multiple times over the weeks to discuss who would handle what algorithm, how we would share it visually and how to find the time complexity of each algorithm. Once we were able to use a visualizer we moved on to the presentation. This presentation will come to include graphs, comparisons and the logic behind the code. Once everything is set for our presentation and research we met again to record ourselves to see how efficiently we can discuss our findings. We would then divide up the report into pieces for us to begin and work together to fill any gaps for the report.
 Instructions
 ---------------------
 SDL Visualizer:
