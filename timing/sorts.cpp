@@ -93,6 +93,19 @@ void Sorts::radixSort(std::vector<int> &arr, int maxDigits) {
 
 }
 
+void Sorts::radixSort(std::vector<int> &arr) {
+
+    // Iterate through array and find maximum value
+    int maxVal = arr[0];
+    for (int i = 1 ; i < arr.size() ; i++) {
+        if (arr[i] > maxVal)
+            maxVal = arr[i];
+    }
+
+    // go to radix-sort implementation with a known maximum value of digits
+    return radixSort(arr, ceil(log10(maxVal)));
+}
+
 void Sorts::quickSort(std::vector<int> &arr) {
     std::random_device rd;
     std::mt19937 random(rd());
@@ -138,17 +151,4 @@ int Sorts::quickSortHelper(std::vector<int> &arr, int left, int right) {
 
     // return pivot's position
     return j;
-}
-
-void Sorts::radixSort(std::vector<int> &arr) {
-
-    // Iterate through array and find maximum value
-    int maxVal = arr[0];
-    for (int i = 1 ; i < arr.size() ; i++) {
-        if (arr[i] > maxVal)
-            maxVal = arr[i];
-    }
-
-    // go to radix-sort implementation with a known maximum value of digits
-    return radixSort(arr, ceil(log10(maxVal)));
 }
