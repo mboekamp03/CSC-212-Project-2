@@ -11,8 +11,8 @@ We met multiple times over the weeks to discuss who would handle what algorithm,
 
 Instructions
 ---------------------
-Installation of SDL2 for SDL Visualization
-Steps on macOS:
+### Installation of SDL2 for SDL Visualization
+#### Steps on macOS:
 
   Go to the SDL website: https://www.libsdl.org/
   
@@ -78,7 +78,7 @@ Steps on macOS:
 
   Now, after running, a separate window will open, showing a sort occuring
 
-  Installation of Timing Program
+  ### Installation of Timing Program
 
   Install a python interpreter, and the g++ compiler
 
