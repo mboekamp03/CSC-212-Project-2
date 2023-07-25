@@ -157,9 +157,7 @@ int quickSortHelper(std::vector<int>& arr, int left, int right, SDL_Renderer* re
     // Visualize the array after partitioning step
     renderBars(renderer, arr);
     SDL_Delay(FRAME_DELAY);
-
-    renderBars(renderer, arr);
-    SDL_Delay(FRAME_DELAY);
+    
     // return pivot's position
     return j;
 }
@@ -200,15 +198,6 @@ int main(int argc, char* argv[]) {
 
     std::vector<int> bars(NUM_BARS);
 
-    // std::random_device random;
-    // std::uniform_int_distribution<int> distribution(1,99);
-    // std::vector<int> arr;
-
-    // for (int i = 0; i < 100; i++) {
-    //     arr.push_back(distribution(random));
-    // }
-
-
     NUM_BARS = arr.size();
     BAR_WIDTH = (SCREEN_WIDTH - (NUM_BARS - 1) * BAR_SPACING) / NUM_BARS;
     MAX_BAR_HEIGHT = SCREEN_HEIGHT - 10;
@@ -223,17 +212,21 @@ int main(int argc, char* argv[]) {
             }
         }
 
+        // Insertion
         if (mode == 0) {
             FRAME_DELAY = 25;
             insertionSort(arr, renderer);
         }
+        // Merge
         else if (mode == 1) {
             mergeSort(arr, 0, arr.size() - 1, renderer);
         }
+        // Quick
         else if (mode == 2) {
             FRAME_DELAY = 75;
             quickSort(arr, renderer);
         }
+        // Radix
         else if (mode == 3) {
             FRAME_DELAY = 350;
             radixSort(arr, static_cast<int>(log10(NUM_BARS) + 1), renderer);
