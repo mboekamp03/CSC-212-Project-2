@@ -54,11 +54,15 @@ Steps on macOS:
 
   With our project, use the following line:
 
+  ```
   g++  visual.cpp -o program -L /Library/Frameworks/SDL2.framework/Headers -F /Library/Frameworks/ -framework SDL2
+  ```
 
   Once compiled, enter the following line into your terminal with the correct input file name and the correct mode:
 
+  ```
   ./program <file_name>.txt <mode>
+  ```
 
   There are four text files in the GitHub to be tested
 
