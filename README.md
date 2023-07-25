@@ -13,6 +13,9 @@ Web Based Visualizer Repository
 ---------------------
 https://github.com/rhbuckley/react-sort
 
+Link to Report (For Visuals)
+---------------------
+https://docs.google.com/document/d/1WSx6-ZRZaJlZajsZyK1wAcaZz5Qb26S9LOeKu_LKgqE/edit
 
 Instructions
 ---------------------
