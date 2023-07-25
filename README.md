@@ -48,7 +48,9 @@ Steps on macOS:
 
   When compiling, use this format, replacing the file name with the file of your choosing
 
+  ```
   g++ <file_name>.cpp -o program -L /Library/Frameworks/SDL2.framework/Headers -F /Library/Frameworks/ -framework SDL2
+  ```
 
   With our project, use the following line:
 
