@@ -20,7 +20,7 @@ Instructions
   
   Click the download that is correct for your computer
   
-  To skip this step click the following for Macbooks: SDL2-2.28.1.dmg
+  To skip this step click the following for Macbooks: https://www.google.com/url?q=https://github.com/libsdl-org/SDL/releases/download/release-2.28.1/SDL2-2.28.1.dmg&sa=D&source=docs&ust=1690251149138911&usg=AOvVaw2SU3_hxGrFtx0p9yjDeuYV
   
   Clicking here will download the correct file
   
