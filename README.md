@@ -3,11 +3,16 @@ CSC212 Project 2
 
 Summary
 ---------------------
-In our project we implemented a sort visualizer to accurateely display the Insertion Sort, Merge Sort, Quicksort, and Radix Sort algorithms at each step. We also implmented a timing program to determine which of the sorts were the fastest.
+In our project we implemented a sort visualizer to accurately display the Insertion Sort, Merge Sort, Quicksort, and Radix Sort algorithms at each step. We also implemented a timing program to determine which of the sorts were the fastest.
 
 Planning
 ---------------------
 We met multiple times over the weeks to discuss who would handle what algorithm, how we would share it visually and how to find the time complexity of each algorithm. Once we were able to use a visualizer we moved on to the presentation. This presentation will come to include graphs, comparisons and the logic behind the code. Once everything is set for our presentation and research we met again to record ourselves to see how efficiently we can discuss our findings. We would then divide up the report into pieces for us to begin and work together to fill any gaps for the report.
+
+Web Based Visualizer Repository
+---------------------
+https://github.com/rhbuckley/react-sort
+
 
 Instructions
 ---------------------
