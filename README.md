@@ -3,7 +3,7 @@ CSC212 Project 2
 
 Summary
 ---------------------
-The task of this project is to implement 4 different sorting algorithms: insertion sort, mergesort, quicksort, and an additional sorting algorithm from our choosing that was not mentioned in class. Additionally, all sorting algorithms must be benchmarked and runtimes recorded using various inputs. 
+In our project we implemented a sort visualizer to accurateely display the Insertion Sort, Merge Sort, Quicksort, and Radix Sort algorithms at each step. We also implmented a timing program to determine which of the sorts were the fastest.
 
 Planning
 ---------------------
