@@ -68,13 +68,13 @@ Instructions
 
   You can use the following modes:
 
-  0: Insertion Sort
+      0: Insertion Sort
 
-  1: Merge Sort
+      1: Merge Sort
 
-  2: Quicksort
+      2: Quicksort
 
-  3: Radix Sort
+      3: Radix Sort
 
   Now, after running, a separate window will open, showing a sort occuring
 
@@ -96,33 +96,3 @@ Instructions
 
   Wait for the program to finish, and then you will find `.csv` files inside of a `./tests` directory, which reports the   time that it took to sort each array.
 
-
-
-SDL Visualizer:
----------------------
-Detailed instructions covering all aspects can be found near the end of the report in the Appendix. Here is a quick breakdown of compiling the program. This breakdown works only after you have installed the SDL download and moved SDL frameworks into the frameworks folder of your MacBook.
-
-1. Copy file titled visual.cpp from this repository and insert into a c++ file.
-
-2. Use the following command to compile the code:
-```
-  g++  visual.cpp -o program -L /Library/Frameworks/SDL2.framework/Headers -F /Library/Frameworks/ -framework SDL2
-```
-
-3. There are four separate modes with this file:
-
-     0 -> Insertion Sort
- 
-     1 -> Merge Sort
- 
-     2 -> Quicksort
- 
-     3 -> Radix Sort
-
-
-5. Run the code using the following command:
-```
-./program <file_name>.txt <mode>
-```
-
-6. After running the code, you will see a new window open containing the sort visualizer
