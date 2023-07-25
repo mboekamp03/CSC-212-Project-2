@@ -16,6 +16,7 @@ https://github.com/rhbuckley/react-sort
 Link to Report and Slides(For Visuals)
 ---------------------
 Report: https://docs.google.com/document/d/1WSx6-ZRZaJlZajsZyK1wAcaZz5Qb26S9LOeKu_LKgqE/edit
+
 Slides: https://docs.google.com/presentation/d/198jq1ElFD1bG6yBklpuFODIFnROAGE2KifODl_4uUOU/edit#slide=id.g1e505e8bf10_0_2698
 
 Instructions
