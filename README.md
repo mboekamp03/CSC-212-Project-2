@@ -19,6 +19,10 @@ Report: https://docs.google.com/document/d/1WSx6-ZRZaJlZajsZyK1wAcaZz5Qb26S9LOeK
 
 Slides: https://docs.google.com/presentation/d/198jq1ElFD1bG6yBklpuFODIFnROAGE2KifODl_4uUOU/edit#slide=id.g1e505e8bf10_0_2698
 
+Link to Timing Results
+---------------------
+https://docs.google.com/spreadsheets/d/1jiSgkbDMqYTOw1Me3Rl8kNnRPaS9W7h1etf-ExuQ6OA/edit#gid=1399677292
+
 Instructions
 ---------------------
 ### Installation of SDL2 for SDL Visualization
